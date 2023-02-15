@@ -9,6 +9,7 @@ import { db } from "../../../FireBase/index";
 import { doc, setDoc } from "firebase/firestore";
 import toastMessage from "../../../utils/toastMessage";
 import { useNavigate } from "react-router-dom";
+
 function Onboarding() {
   const [state, dispatch] = useContext(userContext);
   console.log(state);
@@ -25,13 +26,9 @@ function Onboarding() {
     expectedSalary: "",
   });
   const setSkills = (skill) => {
-    //if skill is already present in the array then remove it
-    // else add it
+  
     if (userData.skills.includes(skill)) {
-      setUserData({
-        ...userData,
-        skills: userData.skills.filter((item) => item !== skill),
-      });
+      setUserData({ ...userData, skills: userData.skills.filter((item) => item !== skill)});
     } else {
       setUserData({ ...userData, skills: [...userData.skills, skill] });
     }
@@ -67,11 +64,7 @@ function Onboarding() {
       >
         <Grid className="grid-item" item xs={12} sm={6}>
           <label>Name</label>
-          <TextField
-            size="small"
-            fullWidth
-            required
-            value={userData.name}
+          <TextField size="small" fullWidth required value={userData.name}
             sx={{
               fieldset: {
                 borderRadius: "10px",
@@ -83,13 +76,7 @@ function Onboarding() {
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
           <label>Email</label>
-          <TextField
-            disabled
-            size="small"
-            type={"email"}
-            fullWidth
-            required
-            value={userData.email}
+          <TextField disabled  size="small" type={"email"}  fullWidth  required value={userData.email}
             sx={{
               fieldset: {
                 borderRadius: "10px",
@@ -103,20 +90,14 @@ function Onboarding() {
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
           <label>phone</label>
-          <TextField
-            size="small"
-            fullWidth
-            required
-            value={userData.phone}
+          <TextField size="small" fullWidth required value={userData.phone}
             sx={{
               fieldset: {
                 borderRadius: "10px",
                 border: "1px solid #00000036",
               },
             }}
-            onChange={(e) =>
-              setUserData({ ...userData, phone: e.target.value })
-            }
+            onChange={(e) =>setUserData({ ...userData, phone: e.target.value })}
           />
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>

@@ -64,10 +64,10 @@ function Auth({ type }) {
   };
 
   return (
-    <Grid container>
-   
+    <>
+     <NavBar/>
+  <Grid container>
     <Grid className="auth-btn-container" item  md={12}>
-    <NavBar/>
     </Grid>
     <Grid className="auth-btn-container" item  md={8}>
       <h1>welcome {type}</h1>
@@ -82,6 +82,8 @@ function Auth({ type }) {
       </div>
     </Grid>
   </Grid>
+    </>
+   
   );
 }
 export default Auth
