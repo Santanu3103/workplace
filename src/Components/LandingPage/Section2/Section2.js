@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import './Section2.css'
 import cards from './cards'
-import { ListItemSecondaryAction } from '@mui/material';
 
 const Section2 = () => {
 

@@ -84,3 +84,40 @@ export const companySize=[
   '1000-5000',
   '5000+',
 ]
+
+export const CandidatePages = [
+  {
+    name: "Job",
+    path: "/candidate/job",
+  },
+  {
+    name: "Applications",
+    path: "/Candidate/application",
+  },
+  {
+    name: "Conversations",
+    path: "/candidate/conversation",
+  },
+  {
+    name: "Home",
+    path: "/",
+  }
+];
+export const EmployeePages = [
+  {
+    name: "Job",
+    path: "/employee/job",
+  },
+  {
+    name: "Applicants",
+    path: "/employee/application",
+  },
+  {
+    name: "Conversations",
+    path: "/employee/conversation",
+  },
+  {
+    name: "profile",
+    path: "/employee/profile",
+  }
+];

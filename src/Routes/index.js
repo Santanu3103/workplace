@@ -1,4 +1,4 @@
-import React, { useContext, useEffect} from "react";
+import React, { useContext} from "react";
 import {userContext} from "../context/userContext";
 import { Routes,Route,Navigate,Outlet} from 'react-router-dom'
 import LandingPage from '../Components/LandingPage'
@@ -19,7 +19,6 @@ const CustomRoutes = () => {
   const [state,dipatch]=useContext(userContext)
   const CandidateProtectedRoute  = () => {
     const isAuth=state.isAuth
-    // isAuth is a boolean value
     if (isAuth) {
       return <Navigate to="/candidate/auth" />
     }

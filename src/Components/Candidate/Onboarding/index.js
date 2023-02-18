@@ -10,9 +10,11 @@ import { doc, setDoc } from "firebase/firestore";
 import toastMessage from "../../../utils/toastMessage";
 import { useNavigate } from "react-router-dom";
 
+
 function Onboarding() {
   const [state, dispatch] = useContext(userContext);
   console.log(state);
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     name: state.userInfo.displayName,
     email: state.userInfo.email,
@@ -25,8 +27,7 @@ function Onboarding() {
     resume: "",
     expectedSalary: "",
   });
-  const setSkills = (skill) => {
-  
+  const setSkills = (skill) => {  
     if (userData.skills.includes(skill)) {
       setUserData({ ...userData, skills: userData.skills.filter((item) => item !== skill)});
     } else {
@@ -36,34 +37,34 @@ function Onboarding() {
   const submitData = async (e) => {
     e.preventDefault();
     console.log(userData);
+   
 
     const userId = state.userInfo.email;
 
 
     try {
-      await setDoc(doc(db, "userInfo", userId), {
-        ...userData,
-        userId,
-        userType: "candidate",
-      });
+      await setDoc(doc(db, "userInfo", userId),{...userData, userId,userType: "candidate",});
+      navigate("/candidate/profile")
       toastMessage("data saved successfully", "success");
-     
     } catch (err) {
       console.log(err);
       toastMessage("something went wrong", "error");
     }
   };
   return (
-    <form onSubmit={submitData}>
-    <container>
+    <>
+     <form className="onboarding-container" >    
+     <container>
       <div>
-        <Button>Logout</Button>
+        <Button onClick={()=>{navigate("/candidate/auth")}}>Logout</Button>
+        <Button onClick={()=>{navigate("/candidate/profile")}}>save</Button>
       </div>
+  
       <Grid className="grid-container" container  spacing={2}
     
       >
         <Grid className="grid-item" item xs={12} sm={6}>
-          <label>Name</label>
+          <label className="field-label">Name</label>
           <TextField size="small" fullWidth required value={userData.name}
             sx={{
               fieldset: {
@@ -75,7 +76,7 @@ function Onboarding() {
           />
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
-          <label>Email</label>
+          <label className="field-label">Email</label>
           <TextField disabled  size="small" type={"email"}  fullWidth  required value={userData.email}
             sx={{
               fieldset: {
@@ -89,7 +90,7 @@ function Onboarding() {
           />
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
-          <label>phone</label>
+          <label className="field-label">phone</label>
           <TextField size="small" fullWidth required value={userData.phone}
             sx={{
               fieldset: {
@@ -101,24 +102,22 @@ function Onboarding() {
           />
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
-          <label>Primary Role</label>
+          <label className="field-label">Primary Role</label>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={userData.primaryRole}
             size="small"
             fullWidth
-            onChange={(e) =>
-              setUserData({ ...userData, primaryRole: e.target.value })
-            }
+            onChange={(e) =>setUserData({ ...userData, primaryRole: e.target.value })}
           >
-            {primaryRole.map((item) => {
-              return <MenuItem value={item}>{item}</MenuItem>;
+            {primaryRole.map((item,index) => {
+              return <MenuItem value={item} key={index}>{item}</MenuItem>;
             })}
           </Select>
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
-          <label>Experience</label>
+          <label className="field-label">Experience</label>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -135,16 +134,14 @@ function Onboarding() {
           </Select>
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
-          <label>Salary Expectations</label>
+          <label className="field-label">Salary Expectations</label>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={userData.expectedSalary}
             size="small"
             fullWidth
-            onChange={(e) =>
-              setUserData({ ...userData, expectedSalary: e.target.value })
-            }
+            onChange={(e) =>setUserData({ ...userData, expectedSalary: e.target.value })}
           >
             {expectedSalary.map((item) => {
               return <MenuItem value={item}>{item}</MenuItem>;
@@ -152,7 +149,7 @@ function Onboarding() {
           </Select>
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
-          <label>linkedin </label>
+          <label className="field-label">linkedin </label>
           <TextField
             size="small"
             type="url"
@@ -170,7 +167,7 @@ function Onboarding() {
           />
         </Grid>
         <Grid className="grid-item" item xs={12}>
-          <label>Skills </label>
+          <label className="field-label">Skills </label>
           <SearchableDropDown
             options={skills}
             onChange={(newValue) => setSkills(newValue)}
@@ -182,14 +179,8 @@ function Onboarding() {
           </div>
         </Grid>
         <Grid className="grid-item" item xs={12}>
-          <label>Bio</label>
-          <TextField
-            size="small"
-            multiline
-            minRows={4}
-            fullWidth
-            required
-            value={userData.bio}
+          <label className="field-label">Bio</label>
+          <TextField size="small"  multiline  minRows={4} fullWidth required value={userData.bio}
             sx={{
               fieldset: {
                 borderRadius: "10px",
@@ -200,9 +191,8 @@ function Onboarding() {
           />
         </Grid>
         <Grid className="grid-item" item xs={12}>
-          <label>Resume</label>
-          <UploadFile
-            type="doc"
+          <label className="field-label">Resume</label>
+          <UploadFile type="doc"
             onUpload={(url) => setUserData({ ...userData, resume: url })}
             value={userData.resume}
           />
@@ -216,11 +206,15 @@ function Onboarding() {
           item
           xs={12}
         >
-          <Button type="sumbit">Complete Setup</Button>
+             <div className="btn-container">
+          <Button  type="button" onClick={submitData}>Complete Setup</Button>
+          </div>
         </Grid>
       </Grid>
       </container>
     </form>
+    </>
+  
   );
 }
 

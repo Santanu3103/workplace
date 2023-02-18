@@ -17,7 +17,7 @@
     justify-content: flex-end;
     margin: 20px;
 }
-.btn-container button{
+.btn-container Button{
   
   background: #7F31D2;
   border-radius: 8px;
@@ -25,6 +25,10 @@
   padding: 10px 20px;
   font-size: clamp(15px,1.5vw, 25px);
   text-transform: none;
+}
+.btn-container Button:hover{ 
+  background: #5a05b6;
+  color: white;
 }
 .upload-btn-container{
   display: flex;

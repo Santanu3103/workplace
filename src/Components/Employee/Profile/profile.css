@@ -1,0 +1,27 @@
+.grid-container{
+  background: #fff;
+  max-width: 95%;
+  margin: auto !important;
+  padding: 10px 10px;
+  border-radius: 5px;
+}
+.grid-item label{
+  font-weight: 700;
+  font-size: 16px;
+  float: left;
+  margin: 10px;
+}
+.skills-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 2px;
+}
+.skills-container div{
+  padding: 5px;
+    background: #c9e1ef;
+    border-radius: 10px;
+    font-size: 13px;
+    cursor: pointer;
+
+}

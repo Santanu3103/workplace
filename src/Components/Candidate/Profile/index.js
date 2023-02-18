@@ -1,177 +1,308 @@
-import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Card from 'react-bootstrap/Card';
+import React,{useContext,useEffect,useState} from 'react';
+import NavBar from '../Navbar';
 import Box from '@mui/material/Box';
-import Form from 'react-bootstrap/Form';
-function Body() {
-  return (
-    <Card className="text-center" style={{margin:"5rem"}}>
-      <Card.Body>
-      <Box sx={{width:"100vw",paddingLeft:"30rem"}}>
-         
-         <Button
-           key="logout"
-           variant="contained"       
-           sx={{ my: 2, color: '#fff'}}
-         >
-           LOGOUT
-         </Button>
-      
-        </Box>
-
-      <h2 style={{padding:"30px"}}>Setup your profile</h2>
-    <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-      </Typography>
-      
-      <Grid container spacing={10} >
-      <Grid item  sm={9}  >
-         
-        </Grid>
-        <Grid item  sm={3}>
-       
-        </Grid>
-        <Grid item  sm={6} >
-          <TextField
-            required
-            id="firstName"
-            name="firstName"
-            label="First name"
-            fullWidth
-            autoComplete="given-name"
-            variant="filled"
-          />
-        </Grid>
-        <Grid item  sm={6}>
-          <TextField
-            required
-            id="lastName"
-            name="lastName"
-            label="Last name"
-            fullWidth
-            autoComplete="family-name"
-            variant="filled"
-          />
-        </Grid>
-        <Grid item sm={6}>
-          <TextField
-            required
-            id="address1"
-            name="address1"
-            label="Address line 1"
-            fullWidth
-            autoComplete="shipping address-line1"
-            variant="filled"
-          />
-        </Grid>
-        <Grid item sm={6}>
-        <TextField
-            required
-            id="city"
-            name="city"
-            label="City"
-            fullWidth
-            autoComplete="shipping address-level2"
-            variant="filled"
-          />
-
-        </Grid>
-        <Grid item sm={6}>
-         
-        </Grid>
-        <Grid item  sm={6}>
-          <TextField
-            id="state"
-            name="state"
-            label="State/Province/Region"
-            fullWidth
-            variant="filled"
-          />
-        </Grid>
-        <Grid item  sm={6}>
-          <TextField
-            required
-            id="zip"
-            name="zip"
-            label="Zip / Postal code"
-            fullWidth
-            autoComplete="shipping postal-code"
-            variant="filled"
-          />
-        </Grid>
-        <Grid item  sm={6}>
-          <TextField
-            required
-            id="country"
-            name="country"
-            label="Country"
-            fullWidth
-            autoComplete="shipping country"
-            variant="filled"
-          />
-        </Grid>
-        <Grid item  sm={6}>
-          <TextField
-            required
-            id="country"
-            name="country"
-            label="Country"
-            fullWidth
-            autoComplete="shipping country"
-            variant="filled"
-          />
-        </Grid>
-        <Grid item sm={6}>
-          
-        </Grid>
-        <Grid item xs={12}>    
-        <Form.Control as="textarea" rows={5} />      
-        </Grid>
-        <Grid item xs={12} sx={{ m: 9, border: '1px dashed grey' }}>    
-        <Box component="span" >
-        <Button
-            variant="contained"
-            sx={{ my: 2, color: '#fff',marginLeft:'10px' }}  
-            >Upload</Button>
-        </Box>
-        </Grid>
-        <Grid item sm={9} >    
-       
-        </Grid>
-        <Grid item sm={3} >    
-        <Box sx={{width:"100vw",display:"flex",marginLeft:'7rem' }}>
-         
-         <Button
-           key="logout"
-           variant="contained"       
-           sx={{ my: 2, color: '#fff' }}
-         >
-           LOGOUT
-         </Button>
-      
-        </Box>
-        </Grid>
-      </Grid>
-     
-    </React.Fragment>
-      </Card.Body>   
-        
-     
-    </Card>
-  );
-}
-
-
+import Card from '@mui/material/Card';
+import { db,storage} from "../../../FireBase/index";
+import { userContext } from '../../../context/userContext';
+import { Button, Grid, MenuItem, Select, TextField } from "@mui/material";
+import { async } from '@firebase/util';
+import toastMessage from "../../../utils/toastMessage";
+import {  doc, getDoc, getDocs, setDoc  } from 'firebase/firestore';
+import FormLoading from "../../Common/Skeleton/FormLoading.js";
+import {
+  primaryRole,
+  skills,
+  expectedSalary,
+  experience,
+} from "../../constants";
+import SearchableDropDown from "../../Common/SearchableDropDown";
+import UploadFile from "../../Common/UploadFile";
+import { useNavigate } from "react-router-dom";
+ 
  const CandidateProfile = () => {
+  const [loading, setLoading] = useState(false);
+const[state,dispatch]=useContext(userContext);
+const [disabledField, setDisabledField] = useState(true);
+const navigate = useNavigate();
+const [userData, setUserData] = useState({
+  name: state.userInfo.displayName,
+  email: state.userInfo.email,
+  phone: "",
+  primaryRole: "",
+  linkedin: "",
+  skills: [],
+  experience: "",
+  bio: "",
+  resume: "",
+  expectedSalary: "",
+});
 
-  return (
+const fetchUserData = async () => {
+  setLoading(true);
+  // fetch data from firebase firestore from userInfo collection where userId = state.user.email
+  const userId = state.userInfo.email;
+  const docRef = doc(db, "userInfo", userId);
+  try {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log(docSnap.data(), "userInfo");
+      setUserData(docSnap.data());
+      setLoading(false);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+useEffect(() => {
+  fetchUserData();
+}, []);
+const setSkills = (skill) => {
+  //if skill is already present in the array then remove it
+  // else add it
+
+  if (userData.skills.includes(skill)) {
+    setUserData({
+      ...userData,
+      skills: userData.skills.filter((item) => item !== skill),
+    });
+  } else {
+    setUserData({ ...userData, skills: [...userData.skills, skill] });
+  }
+};
+
+const submitData = async () => {
+
+  console.log(userData);
+
+  // push data to firebase to collection userInfo
+  const userId = state.userInfo.email;
+
+  try {
+    await setDoc(doc(db, "userInfo", userId), {
+      ...userData,
+      userId,
+      userType: "candidate",
+    });
+    toastMessage("data saved successfully", "success");
+    // redirect to profile page
+  } catch (err) {
+    console.log(err);
+    toastMessage("something went wrong", "error");
+  }
+};
+
+const saveData = () => {
+  if (disabledField) {
+    setDisabledField(false);
+  } else {
+    // call firebase function to save data
+    submitData();
+    setDisabledField(true);
+  }
+};  
+
+return loading ? (
+  <div><FormLoading fields={8} /></div>
+) : (
+  <form onSubmit={submitData}>
     <div>
-      <Body/>
+      <Button>Logout</Button>
+      <Button onClick={saveData}>{disabledField ? "Edit" : "Save"}</Button>
     </div>
-  )
+    <Grid className="grid-container" container spacing={2}>
+      <Grid className="grid-item" item xs={12} sm={6}>
+        <label>Name</label>
+        <TextField
+          disabled={disabledField}
+          size="small"
+          fullWidth
+          required
+          value={userData.name}
+          sx={{
+            fieldset: {
+              borderRadius: "10px",
+              border: "1px solid #00000036",
+            },
+          }}
+          onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+        />
+      </Grid>
+      <Grid className="grid-item" item xs={12} sm={6}>
+        <label>Email</label>
+        <TextField
+          disabled
+          size="small"
+          type={"email"}
+          fullWidth
+          required
+          value={userData.email}
+          sx={{
+            fieldset: {
+              borderRadius: "10px",
+              border: "1px solid #00000036",
+            },
+          }}
+          onChange={(e) =>
+            setUserData({ ...userData, email: e.target.value })
+          }
+        />
+      </Grid>
+      <Grid className="grid-item" item xs={12} sm={6}>
+        <label>phone</label>
+        <TextField
+          size="small"
+          disabled={disabledField}
+          fullWidth
+          required
+          value={userData.phone}
+          sx={{
+            fieldset: {
+              borderRadius: "10px",
+              border: "1px solid #00000036",
+            },
+          }}
+          onChange={(e) =>
+            setUserData({ ...userData, phone: e.target.value })
+          }
+        />
+      </Grid>
+      <Grid className="grid-item" item xs={12} sm={6}>
+        <label>Primary Role</label>
+        <Select
+          disabled={disabledField}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={userData.primaryRole}
+          size="small"
+          fullWidth
+          onChange={(e) =>
+            setUserData({ ...userData, primaryRole: e.target.value })
+          }
+        >
+          {primaryRole.map((item) => {
+            return <MenuItem value={item}>{item}</MenuItem>;
+          })}
+        </Select>
+      </Grid>
+      <Grid className="grid-item" item xs={12} sm={6}>
+        <label>Experience</label>
+        <Select
+          disabled={disabledField}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={userData.experience}
+          size="small"
+          fullWidth
+          onChange={(e) =>
+            setUserData({ ...userData, experience: e.target.value })
+          }
+        >
+          {experience.map((item) => {
+            return <MenuItem value={item}>{item}</MenuItem>;
+          })}
+        </Select>
+      </Grid>
+      <Grid className="grid-item" item xs={12} sm={6}>
+        <label>Salary Expectations</label>
+        <Select
+          disabled={disabledField}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={userData.expectedSalary}
+          size="small"
+          fullWidth
+          onChange={(e) =>
+            setUserData({ ...userData, expectedSalary: e.target.value })
+          }
+        >
+          {expectedSalary.map((item) => {
+            return <MenuItem value={item}>{item}</MenuItem>;
+          })}
+        </Select>
+      </Grid>
+      <Grid className="grid-item" item xs={12} sm={6}>
+        <label>linkedin </label>
+        <TextField
+          disabled={disabledField}
+          size="small"
+          type="url"
+          fullWidth
+          value={userData.linkedin}
+          sx={{
+            fieldset: {
+              borderRadius: "10px",
+              border: "1px solid #00000036",
+            },
+          }}
+          onChange={(e) =>
+            setUserData({ ...userData, linkedin: e.target.value })
+          }
+        />
+      </Grid>
+      <Grid className="grid-item" item xs={12}>
+        <label>Skills </label>
+        <SearchableDropDown
+          disabled={disabledField}
+          options={skills}
+          onChange={(newValue) => setSkills(newValue)}
+        />
+        <div className="skills-container">
+          {userData.skills.map((item) => {
+            return (
+              <div
+                onClick={() => {
+                  !disabledField && setSkills(item);
+                }}
+              >
+                {item}
+              </div>
+            );
+          })}
+        </div>
+      </Grid>
+      <Grid className="grid-item" item xs={12}>
+        <label>Bio</label>
+        <TextField
+          disabled={disabledField}
+          size="small"
+          multiline
+          minRows={4}
+          fullWidth
+          required
+          value={userData.bio}
+          sx={{
+            fieldset: {
+              borderRadius: "10px",
+              border: "1px solid #00000036",
+            },
+          }}
+          onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
+        />
+      </Grid>
+      <Grid className="grid-item" item xs={12}>
+        <label>Resume</label>
+        <UploadFile
+          disabled={disabledField}
+          type="doc"
+          onUpload={(url) => setUserData({ ...userData, resume: url })}
+          value={userData.resume}
+        />
+      </Grid>
+      <Grid
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+        className="grid-item"
+        item
+        xs={12}
+      >
+      
+      </Grid>
+    </Grid>
+  </form>
+);
 }
 
 

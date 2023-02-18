@@ -1,13 +1,10 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import { Input, TextField, Grid } from "@mui/material";
-import { BorderAllRounded } from "@mui/icons-material";
+import { TextField, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Search from "../../../assets/svgFile/search.svg";
 import Location from "../../../assets/svgFile/location.svg";
-import { display } from "@mui/system";
 
 export default function Headers() {
   return (
@@ -20,7 +17,6 @@ export default function Headers() {
         justifyContent: "center",
         flexDirection: "column",
         margin: "0px",
-        // alignContent:"center"
       }}
       maxWidth="xl"
     >

@@ -2,47 +2,26 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import Logo from "../../../imgs/logo.png";
 import ToggleButton from "../../Common/Togglebutton";
 import { useNavigate } from "react-router-dom";
-const pages = [
-  {
-    name: "Home",
-    path: "/",
-  },
-  {
-    name: "Find Candidates",
-    path: "/employee/auth",
-  },
-  {
-    name: "Find Jobs",
-    path: "/candidate/auth",
-  }
-];
-
+import {EmployeePages} from '../../constants'
 
 function  NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+ 
 const navigate=useNavigate();
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
  
   const handleCloseNavMenu = (path) => {
     navigate(path);
     setAnchorElNav(null);
   };
 
-
+ 
   return (
     <AppBar position="static">
       <Container
@@ -70,40 +49,7 @@ const navigate=useNavigate();
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" },color:'black' }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none",color:'black' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={()=>handleCloseNavMenu(page.path)}>
-                  <Typography textAlign="center">{page.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+          
           </Box>
 
           <Typography
@@ -125,7 +71,7 @@ const navigate=useNavigate();
             <img width="100px" src={Logo} alt="logo" />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {EmployeePages.map((page) => (
               <Button
                 key={page}
                 onClick={()=>handleCloseNavMenu(page.path)}
@@ -140,7 +86,6 @@ const navigate=useNavigate();
             <Tooltip title="Open settings">
               <ToggleButton />
             </Tooltip>
-
           </Box>
         </Toolbar>
       </Container>
@@ -148,3 +93,5 @@ const navigate=useNavigate();
   );
 }
 export default NavBar;
+
+

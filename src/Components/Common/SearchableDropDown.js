@@ -7,9 +7,7 @@ function SearchableDropDown({ options, onChange }) {
     <Autocomplete
       disablePortal
       size="small"
-      onChange={(event, newValue) => {
-        onChange(newValue);
-      }}
+      onChange={(event, newValue) => {onChange(newValue)}}
       fullWidth
       id="combo-box-demo"
       options={options}
