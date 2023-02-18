@@ -11,8 +11,10 @@ import { storage } from "../../../FireBase/index";
 import { industryType,companySize} from "../../constants/index";
 function EmployeeOnboarding() {
 
+  
   const [state, dispatch] = useContext(userContext);
   const navigate = useNavigate();
+
   const [uploadLoading, setUploadLoading] = useState(0);
   let inputRef = React.createRef();
   const [values, setValues] = useState({
@@ -31,11 +33,12 @@ function EmployeeOnboarding() {
   const submit = async (e) => {
     e.preventDefault();
     console.log(values);
-    const user =state.userInfo.email;
-    const uid = user.uid;
+    const user =state.userInfo.uid;
+   
     try {
-      await setDoc(doc(db, "userInfo", uid), {...values,type: "employer",});
-      navigate("/employer/profile");
+      console.log(state.userInfo);
+      await setDoc(doc(db, "userInfo",user), {...values,type: "employer"});
+      navigate("/employee/profile");
     } catch (err) {
       console.log(err);
 
