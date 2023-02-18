@@ -56,9 +56,7 @@ function Auth({ type }) {
       </div>
     </Grid>
     <Grid item  xs={4}>
-      <div>
-        <img width="100%" src={authimg} alt="authimg" />
-      </div>
+
     </Grid>
   </Grid>
     </>

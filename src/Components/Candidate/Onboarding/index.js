@@ -57,7 +57,6 @@ function Onboarding() {
      <container>
       <div>
         <Button onClick={()=>{navigate("/candidate/auth")}}>Logout</Button>
-        <Button onClick={()=>{navigate("/candidate/profile")}}>save</Button>
       </div>
   
       <Grid className="grid-container" container  spacing={2}

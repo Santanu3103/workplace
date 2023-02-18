@@ -1,7 +1,6 @@
 import React,{useContext,useEffect,useState} from 'react';
 import NavBar from '../Navbar';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import { db,storage} from "../../../FireBase/index";
 import { userContext } from '../../../context/userContext';
 import { Button, Grid, MenuItem, Select, TextField } from "@mui/material";
@@ -18,6 +17,7 @@ import {
 import SearchableDropDown from "../../Common/SearchableDropDown";
 import UploadFile from "../../Common/UploadFile";
 import { useNavigate } from "react-router-dom";
+
  
  const CandidateProfile = () => {
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,6 @@ const [userData, setUserData] = useState({
 
 const fetchUserData = async () => {
   setLoading(true);
-  // fetch data from firebase firestore from userInfo collection where userId = state.user.email
   const userId = state.userInfo.email;
   const docRef = doc(db, "userInfo", userId);
   try {
@@ -58,8 +57,6 @@ useEffect(() => {
   fetchUserData();
 }, []);
 const setSkills = (skill) => {
-  //if skill is already present in the array then remove it
-  // else add it
 
   if (userData.skills.includes(skill)) {
     setUserData({
@@ -75,7 +72,6 @@ const submitData = async () => {
 
   console.log(userData);
 
-  // push data to firebase to collection userInfo
   const userId = state.userInfo.email;
 
   try {
@@ -85,7 +81,7 @@ const submitData = async () => {
       userType: "candidate",
     });
     toastMessage("data saved successfully", "success");
-    // redirect to profile page
+    
   } catch (err) {
     console.log(err);
     toastMessage("something went wrong", "error");
@@ -96,7 +92,6 @@ const saveData = () => {
   if (disabledField) {
     setDisabledField(false);
   } else {
-    // call firebase function to save data
     submitData();
     setDisabledField(true);
   }
@@ -105,7 +100,9 @@ const saveData = () => {
 return loading ? (
   <div><FormLoading fields={8} /></div>
 ) : (
-  <form onSubmit={submitData}>
+  <>
+  <NavBar/>
+ <form onSubmit={submitData}>
     <div>
       <Button>Logout</Button>
       <Button onClick={saveData}>{disabledField ? "Edit" : "Save"}</Button>
@@ -302,6 +299,8 @@ return loading ? (
       </Grid>
     </Grid>
   </form>
+  </>
+ 
 );
 }
 
