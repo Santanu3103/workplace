@@ -47,20 +47,20 @@ const EmployeeProfile = () => {
   };
 
   useEffect(() => {
-    // setcompanyData({
-    //   name: state.userInfo.displayName,
-    //   email: state.userInfo.email,
-    //   phone: "",
-    //   companyName: "",
-    //   companySize: "",
-    //   role: "",
-    //   companyWebsite: "",
-    //   companyTag: "",
-    //   companyBio: "",
-    //   industryType: "",
-    //   companyLogo: "",
-    // })
-    // console.log(state);
+    setcompanyData({
+      name: state.userInfo.displayName,
+      email: state.userInfo.email,
+      phone: "",
+      companyName: "",
+      companySize: "",
+      role: "",
+      companyWebsite: "",
+      companyTag: "",
+      companyBio: "",
+      industryType: "",
+      companyLogo: "",
+    })
+    console.log(state);
  
     fetchUserData();
   }, []);
