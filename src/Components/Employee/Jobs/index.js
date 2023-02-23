@@ -7,6 +7,7 @@ function Job() {
 const [selectedJob, setSelectedJob] = React.useState(null);
   const postAjobBtn = () => {
     setMobileViewForm(true)
+    setSelectedJob(null)
   }
 const selectedJobfun = (item) => {
   setMobileViewForm(true)
@@ -17,7 +18,7 @@ const selectedJobfun = (item) => {
     <Grid
     
     sx={{
-      margin: 'auto',
+      margin: '10px auto',
       maxWidth: { xs: '95%', md: '100%'}
 
     }}
@@ -39,7 +40,7 @@ const selectedJobfun = (item) => {
       }}
 
       item xs={12} md={8}>
-        <Form  setMobileViewForm={setMobileViewForm} />
+        <Form selectedJob={selectedJob}  setMobileViewForm={setMobileViewForm} />
         </Grid>
       </Grid>
   )

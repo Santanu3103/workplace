@@ -27,6 +27,7 @@ function EmployeeOnboarding() {
     noOfEmployees: "",
     companyLocation: "",
     companyTagline: "",
+    jobrole:"",
     logo: "",
   });
 
@@ -173,15 +174,25 @@ function EmployeeOnboarding() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={values.companySize}
+            value={values.noOfEmployees}
             size="small"
             fullWidth
-            onChange={(e) =>setValues({ ...values, expectedSalary: e.target.value })}
+            onChange={(e) =>setValues({ ...values,  noOfEmployees: e.target.value })}
           >
             {companySize.map((item) => {
               return <MenuItem value={item}>{item}</MenuItem>;
             })}
           </Select>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <label className="field-label">Job Role</label>
+          <TextField    
+            fullWidth
+            value={values.jobrole}
+            onChange={(e) =>
+              setValues({ ...values, jobrole: e.target.value })
+            }
+          />
         </Grid>
         <Grid item xs={12} sm={12}>
           <label className="field-label">Company description</label>

@@ -7,7 +7,7 @@ import BannerImage from "./Bannersection";
 import Headers from "./Section1/index.js";
 function LandingPage() {
   return (
-    <div>
+    <form>
       <div>
         <NavBar />
         <Headers />
@@ -24,7 +24,7 @@ function LandingPage() {
 
       {/* <div>Never Want to Miss Any Job News?</div> */}
       <Footer />
-    </div>
+    </form>
   );
 }
 

@@ -1,10 +1,7 @@
 import React,{useContext,useEffect,useState} from 'react';
-import NavBar from '../Navbar';
-import Box from '@mui/material/Box';
 import { db,storage} from "../../../FireBase/index";
 import { userContext } from '../../../context/userContext';
 import { Button, Grid, MenuItem, Select, TextField } from "@mui/material";
-import { async } from '@firebase/util';
 import toastMessage from "../../../utils/toastMessage";
 import {  doc, getDoc, getDocs, setDoc  } from 'firebase/firestore';
 import FormLoading from "../../Common/Skeleton/FormLoading.js";
@@ -17,13 +14,15 @@ import {
 import SearchableDropDown from "../../Common/SearchableDropDown";
 import UploadFile from "../../Common/UploadFile";
 import { useNavigate } from "react-router-dom";
+import CandidateNavbar from '../../Hoc/CandidateNavbar';
 
  
- const CandidateProfile = () => {
-  const [loading, setLoading] = useState(false);
-const[state,dispatch]=useContext(userContext);
-const [disabledField, setDisabledField] = useState(true);
-const navigate = useNavigate();
+const CandidateProfile = () => {
+
+    const [loading, setLoading] = useState(false);
+    const[state,dispatch]=useContext(userContext);
+    const [disabledField, setDisabledField] = useState(true);
+    const navigate = useNavigate();
 const [userData, setUserData] = useState({
   name: state.userInfo.displayName,
   email: state.userInfo.email,
@@ -55,7 +54,7 @@ const fetchUserData = async () => {
 
 useEffect(() => {
   fetchUserData();
-}, []);
+},[]);
 const setSkills = (skill) => {
 
   if (userData.skills.includes(skill)) {
@@ -100,14 +99,21 @@ const saveData = () => {
 return loading ? (
   <div><FormLoading fields={8} /></div>
 ) : (
-  <>
-  <NavBar/>
+  
+
  <form onSubmit={submitData}>
+   
+   
+    <Grid className="grid-container" container spacing={2}>
+    <Grid className="grid-item" item xs={12} sm={12}>
+    <CandidateNavbar/>
+      </Grid>
+    <Grid className="grid-item" item xs={12} sm={12}>
     <div>
       <Button>Logout</Button>
       <Button onClick={saveData}>{disabledField ? "Edit" : "Save"}</Button>
     </div>
-    <Grid className="grid-container" container spacing={2}>
+      </Grid>
       <Grid className="grid-item" item xs={12} sm={6}>
         <label>Name</label>
         <TextField
@@ -237,7 +243,7 @@ return loading ? (
           }
         />
       </Grid>
-      <Grid className="grid-item" item xs={12}>
+      <Grid className="grid-item" item xs={12} >
         <label>Skills </label>
         <SearchableDropDown
           disabled={disabledField}
@@ -299,7 +305,7 @@ return loading ? (
       </Grid>
     </Grid>
   </form>
-  </>
+  
  
 );
 }

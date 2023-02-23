@@ -1,9 +1,48 @@
 import { Button, TextField } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./job.css";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import SideJobCard from "./SideJobCard";
-function Sidebar({ postAjobBtn, selectedJob,selectedJobfun }) {
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { db } from "../../../FireBase";
+import { userContext } from "../../../context/userContext";
+function Sidebar({ postAjobBtn, selectedJob, selectedJobfun }) {
+  const [allJobs, setJobs] = useState(null);
+  const [filteredJobs,setFilteredJobs]=useState(null)
+  const [state, dispatch] = useContext(userContext);
+  const [search,setSeach]=useState('')
+  const fetchAllJobs = async () => {
+    // fetch all jobs from jobs collection where employerId is == current user email
+    // create a query with this condition (where employerId is == current user email)
+    const currentUserId = state.user.email;
+    const q = query(
+      // collection ref
+      collection(db, "jobs"),
+      //condition
+      where("employerId", "==", currentUserId)
+    );
+    const unsubscribe = await onSnapshot(q, (querySnapshot) => {
+      const jobs = [];
+      querySnapshot.forEach((doc) => {
+        jobs.push(doc.data());
+      });
+      setJobs(jobs);
+      setFilteredJobs(jobs)
+      console.log(jobs);
+    });
+    // return ()=>unsubscribe
+  };
+
+  useEffect(() => {
+    fetchAllJobs();
+  }, []);
+  
+const filterTheJobs=(e)=>{
+  setSeach(e.target.value)
+ const jobs=allJobs.filter((item)=>item.jobTitle.toLowerCase().startsWith(e.target.value.toLowerCase()))
+ setFilteredJobs(jobs)
+
+}
   return (
     <div>
       <Button className="post-btn" onClick={postAjobBtn}>
@@ -11,6 +50,8 @@ function Sidebar({ postAjobBtn, selectedJob,selectedJobfun }) {
       </Button>
       <TextField
         size="small"
+        value={search}
+        onChange={(e)=>filterTheJobs(e)}
         fullWidth
         sx={{
           "& fieldset": {
@@ -28,63 +69,35 @@ function Sidebar({ postAjobBtn, selectedJob,selectedJobfun }) {
           ),
         }}
       />
-      <div>
-        {[
+      {filteredJobs && filteredJobs.length === 0 ? (
+        <div>no data</div>
+      ) : filteredJobs && filteredJobs.length > 0 ? (
+        <div>
           {
-            jobTitle: "Software Engineer",
-            createdAt: "2021-09-01T12:00:00.000Z",
-            jobType: "Full Time",
-            jobLocation: "Remote",
-            jobId: "1",
-          },
-          {
-            jobTitle: "Software Engineer-2",
-            createdAt: "2021-09-01T12:00:00.000Z",
-            jobType: "Full Time",
-            jobLocation: "Remote",
-            jobId: "2",
-          },
-          {
-            jobTitle: "Software Engineer-3",
-            createdAt: "2021-09-01T12:00:00.000Z",
-            jobType: "Full Time",
-            jobLocation: "Remote",
-            jobId: "3",
-          },
-          {
-            jobTitle: "Software Engineer BE",
-            createdAt: "2021-09-01T12:00:00.000Z",
-            jobType: "Full Time",
-            jobLocation: "Remote",
-            jobId: "4",
-          },
-          {
-            jobTitle: "Software Engineer-FE",
-            createdAt: "2021-09-01T12:00:00.000Z",
-            jobType: "Full Time",
-            jobLocation: "Remote",
-            jobId: "5",
-          },
-          {
-            jobTitle: "Cloud Engineer",
-            createdAt: "2021-09-01T12:00:00.000Z",
-            jobType: "Full Time",
-            jobLocation: "Remote",
-            jobId: "6",
-          },
-          {
-            jobTitle: "Cloud Engineer-2",
-            createdAt: "2021-09-01T12:00:00.000Z",
-            jobType: "Full Time",
-            jobLocation: "Remote",
-            jobId: "7",
-          },
-        ].map((item, index) => {
-          return (
-            <SideJobCard key={index} selectedJobfun={selectedJobfun} selectedJob={selectedJob} item={item} />
-          );
-        })}
-      </div>
+          // [
+          //   {
+          //     jobTitle: "Software Engineer",
+          //     createdAt: "2021-09-01T12:00:00.000Z",
+          //     jobType: "Full Time",
+          //     jobLocation: "Remote",
+          //     jobId: "1",
+          //   },
+           
+          // ]
+          filteredJobs.map((item, index) => {
+            return (
+              <SideJobCard
+                key={index}
+                selectedJobfun={selectedJobfun}
+                selectedJob={selectedJob}
+                item={item}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <div>loading</div>
+      )}
     </div>
   );
 }

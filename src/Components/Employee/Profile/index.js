@@ -1,4 +1,3 @@
-import NavBar from '../Navbar'
 import { Button, Grid, MenuItem, Select, TextField } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import "./profile.css";
@@ -10,6 +9,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import toastMessage from "../../../utils/toastMessage";
 import { useNavigate } from "react-router-dom";
 import FormLoading from "../../Common/Skeleton/FormLoading.js";
+import EmployerNavbar from '../../Hoc/EmployerNavbar';
 
 const EmployeeProfile = () => {
   const [state, dispatch] = useContext(userContext);
@@ -32,12 +32,12 @@ const EmployeeProfile = () => {
   const fetchUserData = async () => {
    
     setLoading(true);
-    const userId = state.userInfo.email;
+    const userId = state.userInfo.uid;
     const docRef = doc(db, "userInfo", userId);
     try {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.log(docSnap.data(), "userinfo");
+        console.log(docSnap.data(), "userinfo")
         setcompanyData(docSnap.data());
         setLoading(false);
       }
@@ -47,23 +47,24 @@ const EmployeeProfile = () => {
   };
 
   useEffect(() => {
-    setcompanyData({
-      name: state.userInfo.displayName,
-      email: state.userInfo.email,
-      phone: "",
-      companyName: "",
-      companySize: "",
-      role: "",
-      companyWebsite: "",
-      companyTag: "",
-      companyBio: "",
-      industryType: "",
-      companyLogo: "",
-    })
-    console.log(state);
+    // setcompanyData({
+    //   name: state.userInfo.displayName,
+    //   email: state.userInfo.email,
+    //   phone: "",
+    //   companyName: "",
+    //   companySize: "",
+    //   role: "",
+    //   companyWebsite: "",
+    //   companyTag: "",
+    //   companyBio: "",
+    //   industryType: "",
+    //   companyLogo: "",
+    // })
+    // console.log(state);
  
     fetchUserData();
   }, []);
+
   const setSkills = (skill) => {
     if (companyData.skills.includes(skill)) {
       setcompanyData({
@@ -100,14 +101,18 @@ const EmployeeProfile = () => {
     loading ? (
       <div><FormLoading fields={9} /></div>
     ) : (
+   
+       
     <form onSubmit={submitData}>
+    
+      <Grid className="grid-container" container  spacing={2}>
+      <EmployerNavbar/>
+      <Grid className="grid-item" item xs={12} sm={12}>
       <div>
         <Button>Logout</Button>
         <Button onClick={saveData}>{disabledField ? "Edit" : "Save"}</Button>
       </div>
-      <Grid className="grid-container" container  spacing={2}
-    
-      >
+      </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
           <label> Company Name</label>
           <TextField
@@ -126,13 +131,13 @@ const EmployeeProfile = () => {
           />
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
-          <label>phone</label>
+          <label> Phone</label>
           <TextField
           disabled={disabledField}
             size="small"
             fullWidth
             required
-            value={companyData.phone}
+            value={companyData.companyPhone}
             sx={{
               fieldset: {
                 borderRadius: "10px",
@@ -168,7 +173,7 @@ const EmployeeProfile = () => {
           disabled={disabledField}
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={companyData.companySize}
+            value={companyData.noOfEmployees}
             size="small"
             fullWidth
             onChange={(e) =>
@@ -181,26 +186,6 @@ const EmployeeProfile = () => {
           </Select>
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
-          <label>Name </label>
-          <TextField
-            disabled={disabledField}
-            size="small"
-            fullWidth
-            required
-            value={companyData.name}
-            sx={{
-              fieldset: {
-                borderRadius: "10px",
-                border: "1px solid #00000036",
-              },
-            }}
-            onChange={(e) =>
-              setcompanyData({ ...companyData, name: e.target.value })
-            }
-          />
-        </Grid>
-
-        <Grid className="grid-item" item xs={12} sm={6}>
           <label>Email</label>
           <TextField
             disabled
@@ -208,7 +193,7 @@ const EmployeeProfile = () => {
             type={"email"}
             fullWidth
             required
-            value={companyData.email}
+            value={companyData.companyWebsite}
             sx={{
               fieldset: {
                 borderRadius: "10px",
@@ -228,7 +213,7 @@ const EmployeeProfile = () => {
           
             fullWidth
             required
-            value={companyData.role}
+            value={companyData.jobrole}
             sx={{
               fieldset: {
                 borderRadius: "10px",
@@ -260,35 +245,16 @@ const EmployeeProfile = () => {
             }
           />
         </Grid>
-     
-        <Grid className="grid-item" item xs={12} sm={6}>
-          <label>linkedin </label>
-          <TextField
-          disabled={disabledField}
-            size="small"
-            type="url"
-            fullWidth
-            value={companyData.linkedin}
-            sx={{
-              fieldset: {
-                borderRadius: "10px",
-                border: "1px solid #00000036",
-              },
-            }}
-            onChange={(e) =>
-              setcompanyData({ ...companyData, linkedin: e.target.value })
-            }
-          />
-        </Grid>
+   
         <Grid className="grid-item" item xs={12}>
-          <label>comapny tag</label>
+          <label>Comapny Tag</label>
           <TextField
           disabled={disabledField}
             size="small"
            
             fullWidth
             required
-            value={companyData.companyTag}
+            value={companyData.companyTagline}
             sx={{
               fieldset: {
                 borderRadius: "10px",
@@ -299,7 +265,7 @@ const EmployeeProfile = () => {
           />
         </Grid>
         <Grid className="grid-item" item xs={12}>
-          <label>company bio</label>
+          <label>company Description</label>
           <TextField
             size="small"
             disabled={disabledField}
@@ -307,7 +273,7 @@ const EmployeeProfile = () => {
             minRows={4}
             fullWidth
             required
-            value={companyData.companyBio}
+            value={companyData.companyDescription}
             sx={{
               fieldset: {
                 borderRadius: "10px",
@@ -338,7 +304,9 @@ const EmployeeProfile = () => {
         
         </Grid>
       </Grid>
-    </form>)
+    </form>
+    
+     )
   );
 }
 
