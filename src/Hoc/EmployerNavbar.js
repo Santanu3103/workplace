@@ -1,5 +1,5 @@
 import React from 'react'
-import CommonNav from '../components/common/CommonNav';
+import CommonNav from '../Components/common/CommonNav';
 
 function EmployerNavbar() {
   const pages = [

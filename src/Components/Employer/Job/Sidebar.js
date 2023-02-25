@@ -4,7 +4,7 @@ import "./job.css";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import SideJobCard from "./SideJobCard";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { db } from "../../../firebaseconfig";
+import { db } from "../../../Firebase";
 import { userContext } from "../../../context/userContext";
 function Sidebar({ postAjobBtn, selectedJob, selectedJobfun }) {
   const [allJobs, setJobs] = useState(null);

@@ -5,7 +5,7 @@ import { companySize, industryType } from "../../../constants";
 import SearchableDropDown from "../../common/SearchableDropDown";
 import UploadFile from "../../common/UploadFile";
 import { userContext } from "../../../context/userContext";
-import { db } from "../../../firebaseconfig";
+import { db } from "../../../Firebase";
 import { doc, setDoc } from "firebase/firestore";
 import toastMessage from "../../../utils/toastMessage";
 import { useNavigate } from "react-router-dom";

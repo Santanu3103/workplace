@@ -6,19 +6,18 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import Auth from "../components/Auth";
-import Onboarding from "../components/Candidate/Onboarding";
-import Profile from "../components/Candidate/Profile";
-import Jobs from "../components/Candidate/Jobs";
-import Applications from "../components/Candidate/Applications";
-import Conversation from "../components/Candidate/Conversation";
-
-import EmployerOnboarding from "../components/Employer/Onboarding";
-import EmployerProfile from "../components/Employer/Profile";
-import EmployerJob from "../components/Employer/Job";
-import EmployerApplicants from "../components/Employer/Applicants";
-import EmployerConversation from "../components/Employer/Conversation";
-import Landingpage from "../components/LandingPage";
+import Auth from "../Components/Auth";
+import Onboarding from "../Components/Candidate/Onboarding";
+import Profile from "../Components/Candidate/Profile";
+import Jobs from "../Components/Candidate/Jobs";
+import Applications from "../Components/Candidate/Applications";
+import Conversation from "../Components/Candidate/Conversation";
+import EmployerOnboarding from "../Components/Employer/Onboarding";
+import EmployerProfile from "../Components/Employer/Profile";
+import EmployerJob from "../Components/Employer/Job";
+import EmployerApplicants from "../Components/Employer/Applicants";
+import EmployerConversation from "../Components/Employer/Conversation";
+import Landingpage from "../Components/Landingpage/index";
 import { userContext } from "../context/userContext";
 import CandidateNavbar from "../Hoc/CandidateNavbar";
 import EmployerNavbar from "../Hoc/EmployerNavbar.js";

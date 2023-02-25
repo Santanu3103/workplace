@@ -10,7 +10,7 @@ import {
 import SearchableDropDown from "../../common/SearchableDropDown";
 import "./job.css";
 import { setDoc, doc } from "firebase/firestore";
-import { db } from "../../../firebaseconfig";
+import { db } from "../../../Firebase";
 import { v4 as uuidv4 } from "uuid";
 import { userContext } from "../../../context/userContext";
 const initialState={

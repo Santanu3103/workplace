@@ -4,16 +4,17 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBU-pBJVI6m1aRvXKd-gQtEGH5EABTMWgI",
-  authDomain: "workpace-feb.firebaseapp.com",
-  projectId: "workpace-feb",
-  storageBucket: "workpace-feb.appspot.com",
-  messagingSenderId: "215803986167",
-  appId: "1:215803986167:web:76bc247f020759d1df13f2"
+  apiKey: "AIzaSyCcSjPTnLVN2QTTFfMcEY0_MBP9hefgBOI",
+  authDomain: "workplace-fb6f2.firebaseapp.com",
+  projectId: "workplace-fb6f2",
+  storageBucket: "workplace-fb6f2.appspot.com",
+  messagingSenderId: "846699226908",
+  appId: "1:846699226908:web:dd3833549ab231310afcd9",
+  measurementId: "G-B103JWG5Y7"
 };
 
 // Initialize Firebase

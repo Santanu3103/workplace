@@ -1,7 +1,7 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { userContext } from "../../../context/userContext";
-import { db } from "../../../firebaseconfig";
+import { db } from "../../../Firebase";
 import CommonTable from "../../common/CommonTable";
 
 const columns = [

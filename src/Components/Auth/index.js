@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { userContext } from "../../context/userContext";
 import "./auth.css";
 import { useNavigate } from "react-router-dom";
-import {auth, db} from '../../firebaseconfig'
+import {auth, db} from '../../Firebase'
 import { doc, getDoc } from "firebase/firestore";
 function Auth({ type }) {
   const navigate = useNavigate();

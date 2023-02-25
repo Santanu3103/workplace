@@ -1,5 +1,5 @@
 import React from 'react'
-import '../LandingPage/landingpage.css'
+import '../Landingpage/landingpage.css'
 function InfoCard({title, subtitle, icon}) {
   return (
     <div className="info-card">

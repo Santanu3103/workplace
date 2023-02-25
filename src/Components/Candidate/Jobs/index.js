@@ -7,7 +7,7 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../../../firebaseconfig";
+import { db } from "../../../Firebase";
 import JobsCard from "./JobsCard";
 import { v4 as uuidv4 } from "uuid";
 import { userContext } from "../../../context/userContext";

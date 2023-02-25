@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { userContext } from "../../../context/userContext";
-import { db } from "../../../firebaseconfig";
+import { db } from "../../../Firebase";
 import { v4 as uuidv4 } from "uuid";
 import CommonTable from "../../common/CommonTable";
 import toastMessage from "../../../utils/toastMessage";
